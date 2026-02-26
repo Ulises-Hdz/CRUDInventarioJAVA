@@ -27,7 +27,7 @@ public class clsArticulo {
         return articulo;
     }
     
-    public void Guardar() {
-        System.err.println(this.aTexto());
+    public void guardar() {
+        System.out.println(this.aTexto());
     }
 }
