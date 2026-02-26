@@ -23,11 +23,15 @@ public class clsArticulo {
     //Im
     public String aTexto(){
         String articulo = this.codigo + "|" + this.descripcion + "|" + this.precio;
-        System.out.print(articulo);
         return articulo;
     }
     
     public void guardar() {
+        
+        mArticulo articulo = new mArticulo();
+        // Enviamos la cadena de texto
+        articulo.insertar(this.aTexto());
+        
         System.out.println(this.aTexto());
     }
 }
