@@ -39,7 +39,7 @@ public class mArticulo {
         }
     }
     
-    public void consultar(){
+    public ArrayList<String> consultar(){
         // Variable donde se guardan los archivos
         ArrayList<String> listaRegistros = new ArrayList<>();
         
@@ -49,7 +49,7 @@ public class mArticulo {
             String linea;
             while((linea = br.readLine()) != null) {
                 // Separa el dato guardo por un caracter especial
-                String[] datos = linea.split("|");
+                String[] datos = linea.split("\\|");
                 String datoBonito = "Codigo: " + datos[0] + " Descripcion: " + datos[1] + " Precio: " + datos[2];
                 listaRegistros.add(datoBonito);
             }
@@ -58,7 +58,7 @@ public class mArticulo {
             System.out.println("Mensaje de error" + e.getMessage());
             listaRegistros.add("Error al cargar los datos");
         }
-        System.out.println(listaRegistros);
+        return listaRegistros;
         
     }
     
