@@ -50,7 +50,7 @@ public class mArticulo {
             while((linea = br.readLine()) != null) {
                 // Separa el dato guardo por un caracter especial
                 String[] datos = linea.split("\\|");
-                String datoBonito = "Codigo: " + datos[0] + " Descripcion: " + datos[1] + " Precio: " + datos[2];
+                String datoBonito = "Codigo: " + datos[0] + "| Descripcion: " + datos[1] + "| Precio: " + datos[2];
                 listaRegistros.add(datoBonito);
             }
         } catch (IOException e) {
