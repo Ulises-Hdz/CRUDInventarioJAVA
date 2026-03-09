@@ -19,6 +19,9 @@ public class frmArticulo extends javax.swing.JFrame {
         initComponents();
     }
 
+    // Variable para guardar temporalmente los datos del resgistro original
+    clsArticulo updateArticulo;
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -167,6 +170,7 @@ public class frmArticulo extends javax.swing.JFrame {
         txtprecio1.addActionListener(this::txtprecio1ActionPerformed);
 
         btnActualizar.setText("Actulaizar");
+        btnActualizar.addActionListener(this::btnActualizarActionPerformed);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -249,12 +253,11 @@ public class frmArticulo extends javax.swing.JFrame {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         clsArticulo cArticulo = new clsArticulo();
-        lstArticulo.setModel(cArticulo.LlenarLista());
-        
+        lstArticulo.setModel(cArticulo.LlenarLista());   
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void txtprecio1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtprecio1ActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_txtprecio1ActionPerformed
 
     private void lstArticuloValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstArticuloValueChanged
@@ -264,11 +267,21 @@ public class frmArticulo extends javax.swing.JFrame {
             String registroSeleccionado = lstArticulo.getSelectedValue();
             // Separar los datos por el caracter especial
             String[] datos = registroSeleccionado.split("\\|");
-            txtcodigo1.setText(datos[0].replace("Codigo:", ""));
-            txtdescripcion1.setText(datos[1].replace("Descripcion:", ""));
-            txtprecio1.setText(datos[2].replace("Precio:", ""));
+            String codigo = datos[0].replace("Codigo:", "");
+            String descripcion = datos[1].replace("Descripcion:", "");
+            String precio = datos[2].replace("Precio:", "");
+            txtcodigo1.setText(codigo);
+            txtdescripcion1.setText(descripcion);
+            txtprecio1.setText(precio);
+            // Llenamos el objeto con los valores original
+            updateArticulo = new clsArticulo(codigo , descripcion , Double.parseDouble(precio));
         }
     }//GEN-LAST:event_lstArticuloValueChanged
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        updateArticulo.actualizar(txtcodigo1.getText(),txtdescripcion1.getText(),txtprecio1.getText());
+        
+    }//GEN-LAST:event_btnActualizarActionPerformed
          
     /**
      * @param args the command line arguments

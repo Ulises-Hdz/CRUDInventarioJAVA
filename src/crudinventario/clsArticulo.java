@@ -57,4 +57,19 @@ public class clsArticulo {
         // Devuelve los datos cargados en el modelo de lsita
         return modelLista;
     }
+    
+    public void actualizar(String newCodigo , String newDescripcion , String newPrecio) {
+        
+        String nuevaLinea = newCodigo + "|" + newDescripcion + "|" + newPrecio;
+        String lineaOriginal = this.codigo + "|" + this.descripcion + "|" + this.precio;
+        
+        //Imprimir los nuevos valores 
+        System.out.println("Valores nuevos" + nuevaLinea);
+        System.out.println("Valores originales" + lineaOriginal);
+        
+        //Solicita la actualizacion del registro
+        mArticulo mArticle = new mArticulo();
+        
+        mArticle.update(lineaOriginal, nuevaLinea , "listado_articulos.txt");
+    }
 }
