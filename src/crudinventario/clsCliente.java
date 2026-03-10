@@ -58,4 +58,18 @@ public class clsCliente {
     return modelLista;
     }
     
+        public void actualizar(String newNoCliente , String newNombre , String newRazonSocial , String newTipoCliente) {
+        
+        String nuevaLinea = newNoCliente + "|" + newNombre + "|" + newRazonSocial + "|" + newTipoCliente;
+        String lineaOriginal = this.Nocliente + "|" + this.Nombre + "|" + this.Razon + "|" + this.Tipo;
+        
+        //Imprimir los nuevos valores 
+        System.out.println("Valores nuevos" + nuevaLinea);
+        System.out.println("Valores originales" + lineaOriginal);
+        
+        //Solicita la actualizacion del registro
+        mCliente mClient = new mCliente();
+        
+        mClient.update(lineaOriginal, nuevaLinea , "listado_articulos.txt");
+    }
 }

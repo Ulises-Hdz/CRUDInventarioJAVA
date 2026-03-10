@@ -19,6 +19,9 @@ public class frmCliente extends javax.swing.JFrame {
         initComponents();
     }
 
+    // Variable para guardar temporalmente los datos del resgistro original
+    clsCliente updateCliente;
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -46,7 +49,7 @@ public class frmCliente extends javax.swing.JFrame {
         jTextField2 = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         txtRazonsocial1 = new javax.swing.JTextField();
-        btnGuardar1 = new javax.swing.JButton();
+        btnActualizar = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -136,6 +139,7 @@ public class frmCliente extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        lstCliente.addListSelectionListener(this::lstClienteValueChanged);
         jScrollPane1.setViewportView(lstCliente);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -169,8 +173,8 @@ public class frmCliente extends javax.swing.JFrame {
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Actualizacion de Clientes"));
 
-        btnGuardar1.setText("Actualizar");
-        btnGuardar1.addActionListener(this::btnGuardar1ActionPerformed);
+        btnActualizar.setText("Actualizar");
+        btnActualizar.addActionListener(this::btnActualizarActionPerformed);
 
         jLabel6.setText("No cliente");
 
@@ -205,7 +209,7 @@ public class frmCliente extends javax.swing.JFrame {
                             .addComponent(txtRazonsocial1)))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnGuardar1)
+                .addComponent(btnActualizar)
                 .addGap(140, 140, 140))
         );
         jPanel3Layout.setVerticalGroup(
@@ -230,7 +234,7 @@ public class frmCliente extends javax.swing.JFrame {
                     .addComponent(txtRazonsocial1)
                     .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addComponent(btnGuardar1)
+                .addComponent(btnActualizar)
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
@@ -275,10 +279,29 @@ public class frmCliente extends javax.swing.JFrame {
         lstCliente.setModel(cCliente.LlenarLista());
     }//GEN-LAST:event_btnBuscarActionPerformed
 
-    private void btnGuardar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardar1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnGuardar1ActionPerformed
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        updateCliente.actualizar(txtNocliente1.getText(), txtNombre1.getText(), txtRazonsocial.getText(), txtTipocliente1.getText());
+    }//GEN-LAST:event_btnActualizarActionPerformed
 
+    private void lstClienteValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstClienteValueChanged
+        // Asegura que seleccionemos un valor en la lista
+        if(!evt.getValueIsAdjusting()) {
+            // Le asigan el valor de la lista selecionado
+            String registroSeleccionado = lstCliente.getSelectedValue();
+            // Separar los datos por el caracter especial
+            String[] datos = registroSeleccionado.split("\\|");
+            String noCliente = datos[0].replace("No Cliente: ", "");
+            String nombre = datos[1].replace("Nombre: ", "");
+            String razonSocial = datos[2].replace("Razon Social: ", "");
+            String tipoCliente = datos[3].replace("Tipo de Cliente: ", "");
+            txtNocliente1.setText(noCliente);
+            txtNombre1.setText(nombre);
+            txtRazonsocial1.setText(razonSocial);
+            txtTipocliente1.setText(tipoCliente);
+            // Llenamos el objeto con los valores original
+            updateCliente = new clsCliente();
+    }//GEN-LAST:event_lstClienteValueChanged
+}
     /**
      * @param args the command line arguments
      */
@@ -301,13 +324,13 @@ public class frmCliente extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new frmCliente().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> { new frmCliente().setVisible(true);});
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JButton btnGuardar1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -72,4 +72,22 @@ public class clsArticulo {
         
         mArticle.update(lineaOriginal, nuevaLinea , "listado_articulos.txt");
     }
+    
+    public String getDescripcion() {
+        return this.descripcion;
+    }
+    
+    public void eliminar() {
+        // Registro a eliminar
+        String lineaOriginal = this.codigo + "|" + this.descripcion + "|" + this.precio;
+        
+        //Imprimir los nuevos valores 
+        System.out.println("Valores originales" + lineaOriginal);
+        
+        //Solicita la eliminacion del registro
+        mArticulo mArticle = new mArticulo();
+        
+        mArticle.delete(lineaOriginal,"listado_articulos.txt");
+        
+    }
 }

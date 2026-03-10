@@ -50,7 +50,7 @@ public class mArticulo {
             while((linea = br.readLine()) != null) {
                 // Separa el dato guardo por un caracter especial
                 String[] datos = linea.split("\\|");
-                String datoBonito = "Codigo: " + datos[0] + "| Descripcion: " + datos[1] + "| Precio: " + datos[2];
+                String datoBonito = "Codigo: " + datos[0] + "|Descripcion: " + datos[1] + "|Precio: " + datos[2];
                 listaRegistros.add(datoBonito);
             }
         } catch (IOException e) {
@@ -90,8 +90,48 @@ public class mArticulo {
         
         if(actualizado){
             if(fileOriginal.delete()) {
-                fileTemporal.renameTo(fileTemporal);
+                fileTemporal.renameTo(fileOriginal);
                 System.out.println("Registro Actualiazado");
+            }else{
+                System.out.println("Error: No se pudo borrar el archivo");
+            }
+        }else {
+            fileTemporal.delete();
+            System.out.println("No se encontro el registro");
+        }
+    }
+    
+        public void delete(String lineaActual , String archivoOriginal) {
+        
+        java.io.File fileOriginal = new java.io.File(archivoOriginal);
+        java.io.File fileTemporal =  new java.io.File("temporal.txt");
+        
+        String lineaLeida;
+        Boolean eliminado = false;
+        
+        try(BufferedReader br = new BufferedReader(new FileReader(fileOriginal));
+            BufferedWriter bw = new BufferedWriter(new FileWriter(fileTemporal));){
+            
+
+            while((lineaLeida = br.readLine()) != null) {
+                if(lineaLeida.equals(lineaActual)) {
+                    
+                    eliminado = true;
+                    } else {
+                    bw.write(lineaLeida);
+                    bw.newLine();
+                }
+                
+            }
+            
+        } catch (Exception e) {
+            System.out.println("Error al eliminar" + e.getMessage());
+        }
+        
+        if(eliminado){
+            if(fileOriginal.delete()) {
+                fileTemporal.renameTo(fileOriginal);
+                System.out.println("Registro Eliminado");
             }else{
                 System.out.println("Error: No se pudo borrar el archivo");
             }
