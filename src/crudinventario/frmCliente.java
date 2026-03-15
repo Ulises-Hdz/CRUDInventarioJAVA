@@ -376,9 +376,9 @@ public class frmCliente extends javax.swing.JFrame {
             String registroSeleccionado = lstCliente.getSelectedValue();
             // Separar los datos por el caracter especial
             String[] datos = registroSeleccionado.split("\\|");
-            String noCliente = datos[0].replace("No Cliente: ", "");
+            String noCliente = datos[0].replace("No cliente: ", "");
             String nombre = datos[1].replace("Nombre: ", "");
-            String tipoCliente = datos[2].replace("Tipo de Cliente: ", "");
+            String tipoCliente = datos[2].replace("Tipo cliente: ", "");
             String razonSocial = datos[3].replace("Razon Social: ", "");
             txtNocliente1.setText(noCliente);
             txtNombre1.setText(nombre);

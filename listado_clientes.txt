@@ -1,2 +1,2 @@
-1|Sergio|VIP|
-123|Ulises HDZ|Vip|Pintor
+123|Ulises Hernandez|Vip|Pintor
+246|Sergio Ramirez|Premiun|Ejecutivo

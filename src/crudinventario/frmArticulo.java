@@ -363,11 +363,21 @@ public class frmArticulo extends javax.swing.JFrame {
     }//GEN-LAST:event_lstArticuloValueChanged
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-        updateArticulo.actualizar(txtcodigo1.getText(),txtdescripcion1.getText(),txtprecio1.getText());
+        if (updateArticulo != null){
+            updateArticulo.actualizar(txtcodigo1.getText(),txtdescripcion1.getText(),txtprecio1.getText());
+            javax.swing.JOptionPane.showMessageDialog(this, "Cliente actualizado con exito");
+            btnBuscarActionPerformed(null);
+        }
+        
         
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        if (updateArticulo == null) {
+            JOptionPane.showMessageDialog(this, "Selecciona un articulo de la lista antes de eliminar.", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
         int respuesta = JOptionPane.showConfirmDialog(this,
                 "¿Estas seguro que deseas eliminar el registro " +
                         updateArticulo.getDescripcion()+"?",

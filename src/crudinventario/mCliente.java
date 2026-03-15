@@ -48,7 +48,7 @@ public class mCliente {
         while((linea = br.readLine()) != null) {
             // Separa el dato guardo por un caracter especial
             String[] datos = linea.split("\\|");
-            String datoBonito = "No Cliente: " + datos[0] + "|Nombre: " + datos[1] + "|Tipo de Cliente: " + datos[2] + "|Razon Social: " + datos[3];
+            String datoBonito = "No cliente: " + datos[0] + "|Nombre: " + datos[1] + "|Tipo cliente: " + datos[2] + "|Razon Social: " + datos[3];
             listaRegistros.add(datoBonito);
         }
         } catch (IOException e) {
