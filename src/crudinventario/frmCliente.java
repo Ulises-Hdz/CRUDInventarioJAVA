@@ -259,6 +259,7 @@ public class frmCliente extends javax.swing.JFrame {
 
         lblTipoCliente.setText("jLabel15");
 
+        lblNoCliente.setBackground(java.awt.Color.gray);
         lblNoCliente.setText("jLabel16");
 
         lblRazonSocial.setText("jLabel17");
@@ -351,8 +352,21 @@ public class frmCliente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        // Obtenemos las propiedades para la validacion
+        String strNoCliente = txtNocliente.getText().trim();
+        String strNombre = txtNombre.getText().trim();
+        String strTipo= txtTipocliente.getText().trim();
+        String strRazon = txtRazonsocial.getText().trim();
+        
+        //Validacion para campos sin llenar al guardar
+        if (strNoCliente.isEmpty() || strNombre.isEmpty() || strTipo.isEmpty() || strRazon.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.");
+            return; // Detenemos la ejecución aquí
+        }
+        
         clsCliente cCliente = new clsCliente(Integer.parseInt(txtNocliente.getText()) , txtNombre.getText(), txtTipocliente.getText() , txtRazonsocial.getText());
         cCliente.guardar();
+        javax.swing.JOptionPane.showMessageDialog(this, "Cliente guardado con éxito.");
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed

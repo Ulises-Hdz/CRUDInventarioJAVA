@@ -1,1 +1,2 @@
-123A|Lampara|199.99
+123A|Lampara de Pie|149.99
+123B|Repisa|200.99

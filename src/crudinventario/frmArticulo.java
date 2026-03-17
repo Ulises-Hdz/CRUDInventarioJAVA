@@ -43,7 +43,7 @@ public class frmArticulo extends javax.swing.JFrame {
         btnGuardar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtID = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         lstArticulo = new javax.swing.JList<>();
@@ -147,7 +147,7 @@ public class frmArticulo extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnBuscar)))
                 .addGap(20, 20, 20))
@@ -162,7 +162,7 @@ public class frmArticulo extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                         .addGap(19, 19, 19)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnBuscar))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)
@@ -331,7 +331,7 @@ public class frmArticulo extends javax.swing.JFrame {
         String strDescripcion = txtdescripcion.getText().trim();
         String strPrecio = txtprecio.getText().trim();
         
-        //Validacion campos sin llenar
+        // Validacion campos sin llenar
         if (strCodigo.isEmpty() || strDescripcion.isEmpty() || strPrecio.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.");
             return; // Detenemos la ejecución aquí
@@ -461,11 +461,11 @@ public class frmArticulo extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lblCodigo;
     private javax.swing.JLabel lblDescripcion;
     private javax.swing.JLabel lblPrecio;
     private javax.swing.JList<String> lstArticulo;
+    private javax.swing.JTextField txtID;
     private javax.swing.JTextField txtcodigo;
     private javax.swing.JTextField txtcodigo1;
     private javax.swing.JTextField txtdescripcion;
