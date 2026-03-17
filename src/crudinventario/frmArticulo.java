@@ -326,9 +326,25 @@ public class frmArticulo extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // TODO add your handling code here:
-        clsArticulo cArticulo = new clsArticulo(txtcodigo.getText() , txtdescripcion.getText(), Double.parseDouble(txtprecio.getText()));
+        //Obtener los textos de los campos y quitar espacios extra
+        String strCodigo = txtcodigo.getText().trim();
+        String strDescripcion = txtdescripcion.getText().trim();
+        String strPrecio = txtprecio.getText().trim();
+        
+        //Validacion campos sin llenar
+        if (strCodigo.isEmpty() || strDescripcion.isEmpty() || strPrecio.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.");
+            return; // Detenemos la ejecución aquí
+        }
+        
+        if (!strPrecio.matches("\\d+(\\.\\d+)?")) {
+            javax.swing.JOptionPane.showMessageDialog(this, "El precio debe ser un número válido.");
+            return; 
+        }
+        
+        clsArticulo cArticulo = new clsArticulo(strCodigo , strDescripcion , Double.parseDouble(strPrecio));
         cArticulo.guardar();
+        javax.swing.JOptionPane.showMessageDialog(this, "Artículo guardado con éxito.");
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
@@ -343,20 +359,31 @@ public class frmArticulo extends javax.swing.JFrame {
     private void lstArticuloValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstArticuloValueChanged
         // Asegura que seleccionemos un valor en la lista
         if(!evt.getValueIsAdjusting()) {
+            
             // Le asigan el valor de la lista selecionado
             String registroSeleccionado = lstArticulo.getSelectedValue();
+            
+            if( registroSeleccionado == null) {
+                return;
+            }
+            
             // Separar los datos por el caracter especial
             String[] datos = registroSeleccionado.split("\\|");
-            String codigo = datos[0].replace("Codigo: ", "");
-            String descripcion = datos[1].replace("Descripcion: ", "");
-            String precio = datos[2].replace("Precio: ", "");
+            
+            String codigo = datos[0].replace("Codigo: ", "").trim();
+            String descripcion = datos[1].replace("Descripcion: ", "").trim();
+            String precio = datos[2].replace("Precio: ", "").trim();
+            
+            //Llenamos los campos de texto
             txtcodigo1.setText(codigo);
             txtdescripcion1.setText(descripcion);
             txtprecio1.setText(precio);
+            
             //Llenamos los lbl
             lblCodigo.setText(codigo);
             lblDescripcion.setText(descripcion);
             lblPrecio.setText(precio);
+            
             // Llenamos el objeto con los valores original
             updateArticulo = new clsArticulo(codigo , descripcion , Double.parseDouble(precio));
         }

@@ -372,23 +372,34 @@ public class frmCliente extends javax.swing.JFrame {
     private void lstClienteValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstClienteValueChanged
         // Asegura que seleccionemos un valor en la lista
         if(!evt.getValueIsAdjusting()) {
+            
             // Le asigan el valor de la lista selecionado
             String registroSeleccionado = lstCliente.getSelectedValue();
+            
+            if( registroSeleccionado == null) {
+                return;
+            }
+            
             // Separar los datos por el caracter especial
             String[] datos = registroSeleccionado.split("\\|");
-            String noCliente = datos[0].replace("No cliente: ", "");
-            String nombre = datos[1].replace("Nombre: ", "");
-            String tipoCliente = datos[2].replace("Tipo cliente: ", "");
-            String razonSocial = datos[3].replace("Razon Social: ", "");
+            
+            String noCliente = datos[0].replace("No cliente: ", "").trim();
+            String nombre = datos[1].replace("Nombre: ", "").trim();
+            String tipoCliente = datos[2].replace("Tipo cliente: ", "").trim();
+            String razonSocial = datos[3].replace("Razon Social: ", "").trim();
+            
+            //Llenamos los campos de texto
             txtNocliente1.setText(noCliente);
             txtNombre1.setText(nombre);
             txtRazonsocial1.setText(razonSocial);
             txtTipocliente1.setText(tipoCliente);
+            
             //Llenamos los lbl
             lblNoCliente.setText(noCliente);
             lblNombre.setText(nombre);
             lblTipoCliente.setText(tipoCliente);
             lblRazonSocial.setText(razonSocial);
+            
             // Llenamos el objeto con los valores original
             updateCliente = new clsCliente(Integer.parseInt(noCliente) , nombre , tipoCliente , razonSocial);
     }//GEN-LAST:event_lstClienteValueChanged
