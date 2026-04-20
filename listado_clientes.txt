@@ -1,3 +1,3 @@
 12345|Ulises Hernandez|Vip|Pintor
 24659|Sergio Ramirez|Premiun|Ejecutivo
-12345|Ulises|Simple|Trabajador
+12345|Ulises|Simple|Trabajadorrrr

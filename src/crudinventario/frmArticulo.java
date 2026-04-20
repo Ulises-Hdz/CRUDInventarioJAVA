@@ -63,6 +63,10 @@ public class frmArticulo extends javax.swing.JFrame {
         lblDescripcion = new javax.swing.JLabel();
         lblPrecio = new javax.swing.JLabel();
         btnEliminar = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jmImportar = new javax.swing.JMenu();
+        jmiImportar = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -165,7 +169,7 @@ public class frmArticulo extends javax.swing.JFrame {
                             .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnBuscar))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -286,6 +290,20 @@ public class frmArticulo extends javax.swing.JFrame {
                 .addComponent(btnEliminar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        jmImportar.setText("Archivo");
+        jmImportar.addActionListener(this::jmImportarActionPerformed);
+
+        jmiImportar.setText("Importar");
+        jmiImportar.addActionListener(this::jmiImportarActionPerformed);
+        jmImportar.add(jmiImportar);
+
+        jMenuBar1.add(jmImportar);
+
+        jMenu2.setText("Informacion");
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -415,6 +433,25 @@ public class frmArticulo extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void jmImportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmImportarActionPerformed
+
+    }//GEN-LAST:event_jmImportarActionPerformed
+
+    private void jmiImportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiImportarActionPerformed
+        // TODO add your handling code here:
+        int respuesta = JOptionPane.showConfirmDialog(this,
+                "Es importante que el archivo a importar tenga el nombre " + 
+                    "inventario.csv y se encuentra en la raiz del proyecto",
+                "Importanción de Datos desde el archivo CSV",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        
+        if(respuesta == JOptionPane.YES_OPTION){
+            clsCSV cCsv = new clsCSV();
+            cCsv.importarDatos();
+        }
+        
+    }//GEN-LAST:event_jmiImportarActionPerformed
          
     /**
      * @param args the command line arguments
@@ -456,11 +493,15 @@ public class frmArticulo extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JMenu jmImportar;
+    private javax.swing.JMenuItem jmiImportar;
     private javax.swing.JLabel lblCodigo;
     private javax.swing.JLabel lblDescripcion;
     private javax.swing.JLabel lblPrecio;
