@@ -13,7 +13,13 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
-
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.Random;
 /**
  *
  * @author dogza
@@ -75,6 +81,7 @@ public class frmArticulo extends javax.swing.JFrame {
         jmImportar = new javax.swing.JMenu();
         jmiImportar = new javax.swing.JMenuItem();
         jmiExportar = new javax.swing.JMenuItem();
+        jmiExportarPDF = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -311,6 +318,10 @@ public class frmArticulo extends javax.swing.JFrame {
         jmiExportar.addActionListener(this::jmiExportarActionPerformed);
         jmImportar.add(jmiExportar);
 
+        jmiExportarPDF.setText("Exportar a PDF");
+        jmiExportarPDF.addActionListener(this::jmiExportarPDFActionPerformed);
+        jmImportar.add(jmiExportarPDF);
+
         jMenuBar1.add(jmImportar);
 
         jMenu2.setText("Informacion");
@@ -516,6 +527,91 @@ public class frmArticulo extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
     }//GEN-LAST:event_jmiExportarActionPerformed
+
+    private void jmiExportarPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiExportarPDFActionPerformed
+        // TODO add your handling code here:
+         // 1. Instanciamos el documento (La "hoja" en blanco)
+    Document documento = new Document();
+    double sumaTotal = 0.0;
+    try {
+        // 2. Preparamos el escritor para guardar el archivo en el disco duro
+        PdfWriter.getInstance(documento, new FileOutputStream("Reporte_Inventario.pdf"));
+       
+        // 3. Abrimos el documento para empezar a escribirle
+        documento.open();
+       
+        // 4. Agregamos un Título
+        documento.add(new Paragraph("Reporte Gerencial de Inventario - Taller 360"));
+        documento.add(new Paragraph(" ")); // Un salto de línea para dar espacio
+
+        // 5. Creamos la estructura tabular (3 columnas)
+        PdfPTable tabla = new PdfPTable(4);
+       
+        // 6. Agregamos los encabezados de la tabla
+        tabla.addCell("CÓDIGO");
+        tabla.addCell("DESCRIPCIÓN");
+        tabla.addCell("PRECIO ($)");
+        tabla.addCell("Estatus");
+
+        // =======================================================
+        // 7. AQUÍ VA EL CICLO DONDE LEEN SUS DATOS
+        // (Esto es solo una simulación manual para el ejemplo)
+        // En la práctica real, aquí harían el recorrido de su JList
+        // o leerían su archivo .txt línea por línea.
+        // =======================================================
+        
+  
+        BufferedReader br = new BufferedReader(new FileReader("listado_articulos.txt"));
+        String linea;
+        java.util.Random rand = new java.util.Random();
+        
+        
+        // El ciclo "while" leerá el archivo sin importar si tiene 10 o 10,000 líneas
+        while ((linea = br.readLine()) != null) {
+            // Saltamos líneas vacías por si las hay
+            if (linea.trim().isEmpty()) continue;
+
+            // Separamos por el pipe |
+            String[] datos = linea.split("\\|");
+                
+            if (datos.length >= 3) {
+                String precioStr = datos[2].trim();
+                    
+                    // --- CORRECCIÓN: Convertir a número y sumar ---
+                    try {
+                        double precioIndividual = Double.parseDouble(precioStr);
+                        sumaTotal += precioIndividual; // <--- AQUÍ SE SUMA
+                    } catch (NumberFormatException e) {
+                        System.out.println("Error en formato de precio: " + precioStr);
+                    }
+                    tabla.addCell(datos[0].trim()); // Código
+                    tabla.addCell(datos[1].trim()); // Descripción
+                    tabla.addCell(precioStr);
+
+                String estado = (rand.nextInt(2) == 0) ? "Disponible" : "Agotado";
+                    tabla.addCell(estado);
+            }
+        }
+        br.close(); // Cerramos el lector de archivos
+      
+
+        // 8. Inyectamos la tabla terminada dentro del documento PDF
+        documento.add(tabla);
+        
+        documento.add(new Paragraph(" ")); // Espacio en blanco
+        Paragraph parrafoSuma = new Paragraph("La suma total de los precios de los productos en inventario es: $" + String.format("%.2f", sumaTotal));
+        documento.add(parrafoSuma);
+        
+        // 9. Cerramos el documento (¡Importantísimo para que se guarde el archivo!)
+        documento.close();
+       
+        // Mensaje de éxito para el usuario
+        javax.swing.JOptionPane.showMessageDialog(this, "¡PDF generado con éxito en la carpeta del proyecto!");
+
+    } catch (Exception e) {
+        System.out.println("Error al generar el PDF: " + e.getMessage());
+    }
+    }//GEN-LAST:event_jmiExportarPDFActionPerformed
          
     /**
      * @param args the command line arguments
@@ -566,6 +662,7 @@ public class frmArticulo extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenu jmImportar;
     private javax.swing.JMenuItem jmiExportar;
+    private javax.swing.JMenuItem jmiExportarPDF;
     private javax.swing.JMenuItem jmiImportar;
     private javax.swing.JLabel lblCodigo;
     private javax.swing.JLabel lblDescripcion;
