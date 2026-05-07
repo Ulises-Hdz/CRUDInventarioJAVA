@@ -4,6 +4,19 @@
  */
 package crudinventario;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -342,6 +355,7 @@ public class frmCliente extends javax.swing.JFrame {
         jMenu2.add(jmiExportarJSON);
 
         jmiExportarPDF.setText("Exportar PDF");
+        jmiExportarPDF.addActionListener(this::jmiExportarPDFActionPerformed);
         jMenu2.add(jmiExportarPDF);
 
         jMenuBar1.add(jMenu2);
@@ -491,7 +505,123 @@ public class frmCliente extends javax.swing.JFrame {
 
     private void jmiExportarJSONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiExportarJSONActionPerformed
         // TODO add your handling code here:
+                 try {
+        // 1. Preparamos una lista (La "caja") para guardar todos los artículos temporalmente en RAM
+        List<clsCliente> listaCliente = new ArrayList<>();
+       
+        // 2. Abrimos el archivo de texto plano para lectura
+             BufferedReader br = new BufferedReader(new FileReader("listado_clientes.txt"));
+        String linea;
+       
+        // 3. Recorremos el archivo secuencial línea por línea
+        while ((linea = br.readLine()) != null) {
+            String[] datos = linea.split("\\|");
+           
+            // Verificamos que la línea tenga las 3 partes para evitar errores
+            if (datos.length >= 3) {
+                // Parseamos el precio a double
+                Integer Parseado = Integer.parseInt(datos[0]);
+               
+                // Creamos el objeto y lo metemos a la lista
+                clsCliente nuevoCliente = new clsCliente(Parseado, datos[1], datos[2], datos[3]);
+                listaCliente.add(nuevoCliente);
+            }
+        }
+        br.close(); // Siempre cerrar el flujo de lectura
+       
+        // ==========================================
+        // 4. LA MAGIA DE GSON (Serialización Masiva)
+        // ==========================================
+       
+        // TIP DE INGENIERÍA: En lugar de usar 'new Gson()', usamos GsonBuilder
+        // con 'setPrettyPrinting' para que el archivo salga formateado con tabulaciones
+        // y saltos de línea (ideal para que los alumnos lo puedan leer fácil).
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+       
+        // Convertimos TODA la lista a un solo String con formato JSON
+        String jsonFinal = gson.toJson(listaCliente);
+       
+        // 5. Guardamos el String gigante en un archivo nuevo .json
+        BufferedWriter bw = new BufferedWriter(new FileWriter("respaldo_clientes.json"));
+        bw.write(jsonFinal);
+        bw.close();
+       
+        JOptionPane.showMessageDialog(this, "¡Exportación masiva a JSON exitosa!");
+       
+    } catch (Exception e) {
+        System.out.println(" Error durante la exportación a JSON: " + e.getMessage());
+        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_jmiExportarJSONActionPerformed
+
+    private void jmiExportarPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiExportarPDFActionPerformed
+        // TODO add your handling code here:
+             // 1. Instanciamos el documento (La "hoja" en blanco)
+    Document documento = new Document();
+    try {
+        // 2. Preparamos el escritor para guardar el archivo en el disco duro
+        PdfWriter.getInstance(documento, new FileOutputStream("Reporte_Clientes.pdf"));
+       
+        // 3. Abrimos el documento para empezar a escribirle
+        documento.open();
+       
+        // 4. Agregamos un Título
+        documento.add(new Paragraph("Reporte Gerencial de Clientes - Taller 360"));
+        documento.add(new Paragraph(" ")); // Un salto de línea para dar espacio
+
+        // 5. Creamos la estructura tabular (3 columnas)
+        PdfPTable tabla = new PdfPTable(4);
+       
+        // 6. Agregamos los encabezados de la tabla
+        tabla.addCell("Id");
+        tabla.addCell("Nombre");
+        tabla.addCell("Tipo de Cliente");
+        tabla.addCell("Razon Social");
+
+        // =======================================================
+        // 7. AQUÍ VA EL CICLO DONDE LEEN SUS DATOS
+        // (Esto es solo una simulación manual para el ejemplo)
+        // En la práctica real, aquí harían el recorrido de su JList
+        // o leerían su archivo .txt línea por línea.
+        // =======================================================
+        
+  
+        BufferedReader br = new BufferedReader(new FileReader("listado_clientes.txt"));
+        String linea;
+        
+        // El ciclo "while" leerá el archivo sin importar si tiene 10 o 10,000 líneas
+        while ((linea = br.readLine()) != null) {
+            // Saltamos líneas vacías por si las hay
+            if (linea.trim().isEmpty()) continue;
+
+            // Separamos por el pipe |
+            String[] datos = linea.split("\\|");
+                
+            if (datos.length >= 4) {
+                String precioStr = datos[2].trim();
+                    
+                tabla.addCell(datos[0].trim()); // No
+                tabla.addCell(datos[1].trim()); // Nombre
+                tabla.addCell(datos[2].trim());
+                tabla.addCell(datos[3].trim());
+
+            }
+        }
+        br.close(); // Cerramos el lector de archivos
+
+        // 8. Inyectamos la tabla terminada dentro del documento PDF
+        documento.add(tabla);
+        
+        // 9. Cerramos el documento (¡Importantísimo para que se guarde el archivo!)
+        documento.close();
+       
+        // Mensaje de éxito para el usuario
+        javax.swing.JOptionPane.showMessageDialog(this, "¡PDF generado con éxito en la carpeta del proyecto!");
+
+    } catch (Exception e) {
+        System.out.println("Error al generar el PDF: " + e.getMessage());
+    }
+    }//GEN-LAST:event_jmiExportarPDFActionPerformed
 
     /**
      * @param args the command line arguments
