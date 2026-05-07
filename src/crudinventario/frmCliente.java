@@ -33,6 +33,9 @@ public class frmCliente extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
+        jCheckBoxMenuItem2 = new javax.swing.JCheckBoxMenuItem();
+        jMenu1 = new javax.swing.JMenu();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -69,6 +72,20 @@ public class frmCliente extends javax.swing.JFrame {
         lblNoCliente = new javax.swing.JLabel();
         lblRazonSocial = new javax.swing.JLabel();
         btnEliminar = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu2 = new javax.swing.JMenu();
+        jmiImportarCSV = new javax.swing.JMenuItem();
+        jmiExportarJSON = new javax.swing.JMenuItem();
+        jmiExportarPDF = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+
+        jCheckBoxMenuItem1.setSelected(true);
+        jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
+
+        jCheckBoxMenuItem2.setSelected(true);
+        jCheckBoxMenuItem2.setText("jCheckBoxMenuItem2");
+
+        jMenu1.setText("jMenu1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -314,6 +331,26 @@ public class frmCliente extends javax.swing.JFrame {
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
+        jMenu2.setText("Archivo");
+
+        jmiImportarCSV.setText("Importar CSV");
+        jmiImportarCSV.addActionListener(this::jmiImportarCSVActionPerformed);
+        jMenu2.add(jmiImportarCSV);
+
+        jmiExportarJSON.setText("Exportar JSON");
+        jmiExportarJSON.addActionListener(this::jmiExportarJSONActionPerformed);
+        jMenu2.add(jmiExportarJSON);
+
+        jmiExportarPDF.setText("Exportar PDF");
+        jMenu2.add(jmiExportarPDF);
+
+        jMenuBar1.add(jMenu2);
+
+        jMenu3.setText("Edit");
+        jMenuBar1.add(jMenu3);
+
+        setJMenuBar(jMenuBar1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -437,6 +474,25 @@ public class frmCliente extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
+    private void jmiImportarCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiImportarCSVActionPerformed
+        // TODO add your handling code here:
+        int respuesta = JOptionPane.showConfirmDialog(this,
+                "Es importante que el archivo a importar tenga el nombre " + 
+                    "clientes.csv y se encuentra en la raiz del proyecto",
+                "Importanción de Datos desde el archivo CSV",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        
+        if(respuesta == JOptionPane.YES_OPTION){
+            clsCSV cCsv = new clsCSV();
+            cCsv.importarClientes();
+        }
+        
+    }//GEN-LAST:event_jmiImportarCSVActionPerformed
+
+    private void jmiExportarJSONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiExportarJSONActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jmiExportarJSONActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -467,6 +523,8 @@ public class frmCliente extends javax.swing.JFrame {
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -480,12 +538,19 @@ public class frmCliente extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JMenuItem jmiExportarJSON;
+    private javax.swing.JMenuItem jmiExportarPDF;
+    private javax.swing.JMenuItem jmiImportarCSV;
     private javax.swing.JLabel lblNoCliente;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblRazonSocial;
