@@ -20,6 +20,20 @@ import com.itextpdf.text.pdf.PdfWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Random;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Element;
+
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.BaseColor;
+import java.text.SimpleDateFormat;
+import com.itextpdf.text.Phrase;
+import java.util.Date; 
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartUtils;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.general.DefaultPieDataset;
 /**
  *
  * @author dogza
@@ -82,6 +96,7 @@ public class frmArticulo extends javax.swing.JFrame {
         jmiImportar = new javax.swing.JMenuItem();
         jmiExportar = new javax.swing.JMenuItem();
         jmiExportarPDF = new javax.swing.JMenuItem();
+        jmiReporteBonito = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -322,6 +337,10 @@ public class frmArticulo extends javax.swing.JFrame {
         jmiExportarPDF.addActionListener(this::jmiExportarPDFActionPerformed);
         jmImportar.add(jmiExportarPDF);
 
+        jmiReporteBonito.setText("Reporte Bonito");
+        jmiReporteBonito.addActionListener(this::jmiReporteBonitoActionPerformed);
+        jmImportar.add(jmiReporteBonito);
+
         jMenuBar1.add(jmImportar);
 
         jMenu2.setText("Informacion");
@@ -539,6 +558,16 @@ public class frmArticulo extends javax.swing.JFrame {
        
         // 3. Abrimos el documento para empezar a escribirle
         documento.open();
+        
+        //
+        try {
+            Image logo = Image.getInstance("imagen_logo.jpg");
+            logo.scaleToFit(200, 200);
+            logo.setAlignment(Element.ALIGN_RIGHT);
+            documento.add(logo);
+        } catch (Exception e) {
+            System.out.println("Aviso: No se encontro la imagen del logo.");
+        }
        
         // 4. Agregamos un Título
         documento.add(new Paragraph("Reporte Gerencial de Inventario - Taller 360"));
@@ -565,6 +594,8 @@ public class frmArticulo extends javax.swing.JFrame {
         String linea;
         java.util.Random rand = new java.util.Random();
         
+        int articulosEconomicos = 0;
+        int articulosPremium = 0;
         
         // El ciclo "while" leerá el archivo sin importar si tiene 10 o 10,000 líneas
         while ((linea = br.readLine()) != null) {
@@ -581,12 +612,18 @@ public class frmArticulo extends javax.swing.JFrame {
                     try {
                         double precioIndividual = Double.parseDouble(precioStr);
                         sumaTotal += precioIndividual; // <--- AQUÍ SE SUMA
+                        if( precioIndividual < 500) {
+                            articulosEconomicos ++;
+                        } else {
+                        articulosPremium ++;
+                        }
                     } catch (NumberFormatException e) {
                         System.out.println("Error en formato de precio: " + precioStr);
                     }
                     tabla.addCell(datos[0].trim()); // Código
                     tabla.addCell(datos[1].trim()); // Descripción
                     tabla.addCell(precioStr);
+
 
                 String estado = (rand.nextInt(2) == 0) ? "Disponible" : "Agotado";
                     tabla.addCell(estado);
@@ -598,9 +635,30 @@ public class frmArticulo extends javax.swing.JFrame {
         // 8. Inyectamos la tabla terminada dentro del documento PDF
         documento.add(tabla);
         
+        // 1. Llenamos el Dataset con los totales calculados 
+        DefaultPieDataset dataset = new DefaultPieDataset(); 
+        dataset.setValue("Económicos (<= $500)", articulosEconomicos); 
+        dataset.setValue("Premium (> $500)", articulosPremium);
+
+
+        // 2. Creamos la gráfica 
+        JFreeChart grafica = ChartFactory.createPieChart( 
+        "Análisis de Precios de Inventario", 
+        dataset, true, true, false);
+
+
+        // 3. Guardamos como PNG temporal 
+        File archivoTemporal = new java.io.File("grafica_temp.png"); 
+        ChartUtils.saveChartAsPNG(archivoTemporal, grafica, 500, 300);
+        
         documento.add(new Paragraph(" ")); // Espacio en blanco
         Paragraph parrafoSuma = new Paragraph("La suma total de los precios de los productos en inventario es: $" + String.format("%.2f", sumaTotal));
         documento.add(parrafoSuma);
+        
+        Image graficaCircular = Image.getInstance("grafica_temp.png");
+        graficaCircular.scaleToFit(400, 800);
+        graficaCircular.setAlignment(Element.ALIGN_CENTER);
+        documento.add(graficaCircular);
         
         // 9. Cerramos el documento (¡Importantísimo para que se guarde el archivo!)
         documento.close();
@@ -612,6 +670,107 @@ public class frmArticulo extends javax.swing.JFrame {
         System.out.println("Error al generar el PDF: " + e.getMessage());
     }
     }//GEN-LAST:event_jmiExportarPDFActionPerformed
+
+    private void jmiReporteBonitoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiReporteBonitoActionPerformed
+        // TODO add your handling code here:
+        // 1. Configuramos fuentes profesionales (Tamaños y Colores)
+        Font fuenteTitulo = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18, BaseColor.BLACK);
+        Font fuenteSubtitulo = FontFactory.getFont(FontFactory.HELVETICA, 12, BaseColor.DARK_GRAY);
+        Font fuenteCabeceraTabla = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, BaseColor.WHITE);
+
+        Document documento = new Document();
+
+        try {
+            // Preparamos el escritor
+            PdfWriter.getInstance(documento, new FileOutputStream("Reporte_Inventario.pdf"));
+            documento.open();
+
+            // 2. Agregamos el Logo (Alineado a la derecha)
+            try {
+                Image logo = Image.getInstance("imagen_logo.jpg");
+                logo.scaleToFit(120, 80); 
+                logo.setAlignment(Element.ALIGN_RIGHT);
+                documento.add(logo);
+            } catch (Exception e) {
+                System.out.println("Aviso: No se encontró la imagen del logo.");
+            }
+
+            // 3. Encabezado Corporativo de la Empresa
+            Paragraph nombreEmpresa = new Paragraph("TALLER 360 S.A. DE C.V.", fuenteTitulo);
+            nombreEmpresa.setAlignment(Element.ALIGN_LEFT);
+            documento.add(nombreEmpresa);
+
+            Paragraph tituloReporte = new Paragraph("Reporte Gerencial de Inventario", fuenteSubtitulo);
+            documento.add(tituloReporte);
+
+            // Agregamos la fecha y hora exacta del reporte
+            String fechaActual = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date());
+            Paragraph fecha = new Paragraph("Fecha de impresión: " + fechaActual, fuenteSubtitulo);
+            fecha.setSpacingAfter(20f); // Damos 20 puntos de espacio antes de que empiece la tabla
+            documento.add(fecha);
+
+            // 4. Mejoramos la estructura de la Tabla
+            PdfPTable tabla = new PdfPTable(4);
+            tabla.setWidthPercentage(100); // El ancho de la hoja
+            tabla.setWidths(new float[]{2f, 5f, 2f, 2f}); // Tamaños relativos la descripción (5f)
+
+            // 5. Cabeceras con Estilo y Color de Fondo
+            String[] cabeceras = {"CÓDIGO", "DESCRIPCIÓN", "PRECIO ($)", "STATUS"};
+            for (String texto : cabeceras) {
+                PdfPCell celda = new PdfPCell(new Phrase(texto, fuenteCabeceraTabla));
+                celda.setBackgroundColor(new BaseColor(41, 128, 185)); // Un azul
+                celda.setHorizontalAlignment(Element.ALIGN_CENTER);
+                celda.setPadding(8f); // Agregamos especiado a las cabeceras
+                tabla.addCell(celda);
+            }
+
+            // 6. Lectura de datos desde el archivo .txt
+            BufferedReader br = new BufferedReader(new FileReader("listado_articulos.txt"));
+            String linea;
+            double totalInversion = 0;
+
+            while ((linea = br.readLine()) != null) {
+                String[] datos = linea.split("\\|");
+                if (datos.length >= 3) {
+
+                    // Usamos PdfPCell para inyectar los datos, así podemos alinear los textos
+                    tabla.addCell(new PdfPCell(new Phrase(datos[0])));
+                    tabla.addCell(new PdfPCell(new Phrase(datos[1])));
+
+                    // El precio lo alineamos a la derecha (estándar contable)
+                    PdfPCell celdaPrecio = new PdfPCell(new Phrase("$" + datos[2]));
+                    celdaPrecio.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                    tabla.addCell(celdaPrecio);
+
+                    try {
+                        totalInversion += Double.parseDouble(datos[2]);
+                    } catch (Exception e) {}
+
+                    String status = (Math.random() > 0.5) ? "Disponible" : "Agotado";
+                    PdfPCell celdaStatus = new PdfPCell(new Phrase(status));
+                    celdaStatus.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    tabla.addCell(celdaStatus);
+                }
+            }
+            br.close();
+
+            // Inyectamos la tabla al documento
+            documento.add(tabla);
+
+            // 7. Resaltamos el Total al final del reporte
+            Font fuenteTotal = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14, BaseColor.RED);
+            Paragraph textoTotal = new Paragraph("\nInversión Total en Inventario: $" + String.format("%.2f", totalInversion), fuenteTotal);
+            textoTotal.setAlignment(Element.ALIGN_RIGHT); 
+            documento.add(textoTotal);
+
+            documento.close();
+            javax.swing.JOptionPane.showMessageDialog(this, "¡PDF generado con éxito en la carpeta del proyecto!");
+
+        } catch (Exception e) {
+            System.out.println("Error al generar el PDF: " + e.getMessage());
+            javax.swing.JOptionPane.showMessageDialog(this, "Error al generar el PDF: " + e.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jmiReporteBonitoActionPerformed
          
     /**
      * @param args the command line arguments
@@ -664,6 +823,7 @@ public class frmArticulo extends javax.swing.JFrame {
     private javax.swing.JMenuItem jmiExportar;
     private javax.swing.JMenuItem jmiExportarPDF;
     private javax.swing.JMenuItem jmiImportar;
+    private javax.swing.JMenuItem jmiReporteBonito;
     private javax.swing.JLabel lblCodigo;
     private javax.swing.JLabel lblDescripcion;
     private javax.swing.JLabel lblPrecio;

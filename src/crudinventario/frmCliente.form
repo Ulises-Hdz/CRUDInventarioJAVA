@@ -58,7 +58,7 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu3">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Edit"/>
+            <Property name="text" type="java.lang.String" value="Informacion"/>
           </Properties>
         </Menu>
       </SubComponents>

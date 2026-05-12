@@ -360,7 +360,7 @@ public class frmCliente extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
-        jMenu3.setText("Edit");
+        jMenu3.setText("Informacion");
         jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
